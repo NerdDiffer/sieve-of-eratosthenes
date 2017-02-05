@@ -1,10 +1,11 @@
 import React from 'react';
+import SieveGrid from './Sieve.jsx';
 
 const App = props => {
   return (
     <div className="app">
-      <h1>React Redux Template</h1>
-      {props.children}
+      <h1>Sieve of Eratosthenes</h1>
+      <SieveGrid />
     </div>
   );
 }
