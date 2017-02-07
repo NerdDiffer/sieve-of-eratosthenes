@@ -1,5 +1,13 @@
-// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-import { generate as generateRange } from './range.js';
+const generateRange = (i, j) => {
+  const range = {};
+
+  while (i <= j) {
+    range[i] = false; // boolean, is the number 'marked'?
+    i += 1;
+  }
+
+  return range;
+};
 
 // Step 3:
 // Enumerate multiples of `p` by counting from `2*p` to `n` in increments of `p`.
