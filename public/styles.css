@@ -1,0 +1,5 @@
+/* Any Grid.Column component with its 'color' prop set to something */
+.ui.grid>.row>.black.column, .ui.grid>.row>.blue.column, .ui.grid>.row>.brown.column, .ui.grid>.row>.green.column, .ui.grid>.row>.grey.column, .ui.grid>.row>.olive.column, .ui.grid>.row>.orange.column, .ui.grid>.row>.pink.column, .ui.grid>.row>.purple.column, .ui.grid>.row>.red.column, .ui.grid>.row>.teal.column, .ui.grid>.row>.violet.column, .ui.grid>.row>.yellow.column {
+  margin-top: 0;
+  margin-bottom: 0;
+}
