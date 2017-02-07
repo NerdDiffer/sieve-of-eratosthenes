@@ -1,5 +1,5 @@
 import React from 'react';
-import SieveGrid from './Sieve.jsx';
+import SieveGrid from './Sieve';
 
 const App = props => {
   return (
