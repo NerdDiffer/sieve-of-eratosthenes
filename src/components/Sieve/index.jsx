@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { generateRange, findNextP, getPrimesIn } from '../../utils/sieve.js';
-import SieveRow from './helpers.jsx';
+import SieveRow from './Row.jsx';
 
 const CELLS_PER_ROW = 10;
+const P_INIT = 2;
 const COLORS = {
   2: 'red',
   3: 'green',
@@ -19,7 +20,7 @@ class SieveGrid extends Component {
     const range = generateRange(2, props.n);
 
     this.state = {
-      p: 2,
+      p: P_INIT,
       range,
       primes: null
     };
@@ -90,12 +91,12 @@ class SieveGrid extends Component {
     }
   }
 
-  render() {
+  renderRows = () => {
     const { n } = this.props;
-    const { p, range, primes } = this.state;
+    const { range } = this.state;
 
     const rows = [];
-    let i = 2;
+    let i = P_INIT;
     let row;
 
     while (i < n) {
@@ -110,6 +111,13 @@ class SieveGrid extends Component {
       rows.push(row);
       i += CELLS_PER_ROW;
     }
+
+    return rows;
+  }
+
+  render() {
+    const { primes } = this.state;
+    const rows = this.renderRows();
 
     return (
       <div>
