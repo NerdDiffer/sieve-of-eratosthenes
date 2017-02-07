@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { generateRange, findNextP, getPrimesIn } from '../../utils/sieve.js';
-import { SieveCell, SieveRow, renderRows } from './helpers.jsx';
+import SieveRow from './helpers.jsx';
 
 const CELLS_PER_ROW = 10;
+const COLORS = {
+  2: 'red',
+  3: 'green',
+  5: 'blue',
+  7: 'yellow',
+  // everything else is 'purple'
+};
 
 class SieveGrid extends Component {
   constructor(props) {
@@ -13,7 +20,8 @@ class SieveGrid extends Component {
 
     this.state = {
       p: 2,
-      range
+      range,
+      primes: null
     };
   }
 
@@ -55,10 +63,21 @@ class SieveGrid extends Component {
 
     function markP() {
       if (this.state.p === null) {
-        console.log(getPrimesIn(this.state.range));
+        this.setState({ primes: getPrimesIn(this.state.range) });
         clearTimeout(timeout);
       } else {
-        this.mark(this.state.p, 'blue', next.bind(this));
+        const { p } = this.state;
+        let _color;
+
+        for (let num in COLORS) {
+          if (p % +num === 0) {
+            _color = COLORS[num];
+            break;
+          }
+        }
+
+        const color = _color || 'purple';
+        this.mark(p, color, next.bind(this));
       }
     }
 
@@ -73,13 +92,32 @@ class SieveGrid extends Component {
 
   render() {
     const { n } = this.props;
+    const { p, range, primes } = this.state;
 
-    const rows = renderRows(1, n, CELLS_PER_ROW);
+    const rows = [];
+    let i = 2;
+    let row;
+
+    while (i < n) {
+      row = (
+        <SieveRow
+          key={i}
+          start={i}
+          rowLen={CELLS_PER_ROW}
+          range={range}
+        />
+      );
+      rows.push(row);
+      i += CELLS_PER_ROW;
+    }
 
     return (
-      <Grid celled>
-        {rows}
-      </Grid>
+      <div>
+        <Grid celled>
+          {rows}
+        </Grid>
+        {!!primes ? primes.join(', ') : null}
+      </div>
     );
   }
 }
