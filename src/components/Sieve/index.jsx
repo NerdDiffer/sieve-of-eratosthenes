@@ -18,23 +18,55 @@ class SieveGrid extends Component {
   }
 
   componentDidMount() {
-    this.iterate(1, 5);
+    this.iterate();
   }
 
-  iterate = (lo, hi) => {
-    this.setState({ i: lo });
-    const STOP = hi + 1;
+  // mark the prime numbers with a darker shade of a color.
+  // mark the non-prime numbers within the same sequence with a lighter shade of color.
+  mark = (pInit, color, next) => {
+    let p = pInit * 2;
+    const { n, ms } = this.props;
+
+    let timeout = setTimeout(update.bind(this), ms)
+
+    function update() {
+      if (p > n) {
+        clearTimeout(timeout);
+        next(pInit);
+      } else {
+        const newRange = Object.assign({}, this.state.range, { [p]: color });
+
+        this.setState({
+          range: newRange,
+          p: p + pInit
+        }, function onSetState() {
+          p = this.state.p;
+          if (p === undefined) { throw new Error('p is undefined'); }
+          timeout = setTimeout(update.bind(this), ms);
+        });
+      }
+    }
+  }
+
+  iterate = () => {
     const { ms } = this.props;
 
-    let timeout = setTimeout(test.bind(this), ms);
+    let timeout = setTimeout(markP.bind(this), ms);
 
-    function test() {
-      if (this.state.i === STOP) { return clearTimeout(timeout); }
+    function markP() {
+      if (this.state.p === null) {
+        console.log(getPrimesIn(this.state.range));
+        clearTimeout(timeout);
+      } else {
+        this.mark(this.state.p, 'blue', next.bind(this));
+      }
+    }
 
-      this.setState((prevState, props) => (
-        { i: prevState.i + 1 }
-      ), function onSetState() {
-        timeout = setTimeout(test.bind(this), ms);
+    function next(pInit) {
+      this.setState(function setNextP(prevState) {
+        return { p: findNextP(prevState.range, pInit) };
+      }, function onSetState() {
+        timeout = setTimeout(markP.bind(this), ms);
       });
     }
   }
