@@ -1,5 +1,5 @@
 import test from 'ava';
-import sieveItUp from '../../src/utils/sieve.js';
+import { sieveItUp } from '../../src/utils/sieve.js';
 
 test('#sieveItUp: works', t => {
   const actual = sieveItUp(50);

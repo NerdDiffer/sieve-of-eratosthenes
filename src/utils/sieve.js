@@ -48,4 +48,4 @@ const sieveItUp = n => {
   return getPrimesIn(range);
 };
 
-export default sieveItUp;
+export { generateRange, findNextP, getPrimesIn, sieveItUp };
