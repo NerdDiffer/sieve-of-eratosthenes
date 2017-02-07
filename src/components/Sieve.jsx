@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
+import { generateRange, findNextP, getPrimesIn } from '../utils/sieve.js';
 
 const CELLS_PER_ROW = 10;
 
@@ -38,8 +39,43 @@ const renderRows = (start, end) => {
 };
 
 class SieveGrid extends Component {
+  constructor(props) {
+    super(props);
+
+    const range = generateRange(2, props.n);
+
+    this.state = {
+      p: 2,
+      range
+    };
+  }
+
+  componentDidMount() {
+    this.iterate(1, 5);
+  }
+
+  iterate = (lo, hi) => {
+    this.setState({ i: lo });
+    const STOP = hi + 1;
+    const { ms } = this.props;
+
+    let timeout = setTimeout(test.bind(this), ms);
+
+    function test() {
+      if (this.state.i === STOP) { return clearTimeout(timeout); }
+
+      this.setState((prevState, props) => (
+        { i: prevState.i + 1 }
+      ), function onSetState() {
+        timeout = setTimeout(test.bind(this), ms);
+      });
+    }
+  }
+
   render() {
-    const rows = renderRows(1, 100);
+    const { n } = this.props;
+
+    const rows = renderRows(1, n);
 
     return (
       <Grid celled>
